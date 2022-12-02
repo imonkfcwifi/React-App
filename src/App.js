@@ -1,38 +1,24 @@
 import { useState, useEffect } from "react";
 
-function App() {
-  const [counter, setValue] = useState(0);
-  const [keyword, setKeyword] = useState("");
-  const onClick = () => setValue((prev) => prev + 1);
-  const onChange = (event) => {
-    setKeyword(event.target.value);
+const Hello = () => {
+  const destroyFc = () => {
+    console.log("destroyed : - <");
   };
-  console.log("i run all the time");
-  useEffect(() => {
-    console.log("CALL THE FIRST API....");
-  }, []);
-  useEffect(() => {
-    console.log("COUNT CHANGES");
-  }, [counter]);
-  useEffect(() => {
-    console.log("COUNT && KEYWORD CHANGES");
-  }, [counter, keyword]);
-  useEffect(() => {
-    if (keyword !== "" && keyword.length >= 5) {
-      console.log("FIND THE KEYWORD", keyword);
-    }
-  }, [keyword]);
-  // typing 할때마다 API를 새로 호출하는데 . . .
+  const effectFc = () => {
+    console.log("created : - >");
+    return destroyFc;
+  };
+  useEffect(effectFc, []);
+  return <h1>Hello</h1>;
+};
+
+function App() {
+  const [showing, setShowing] = useState(false);
+  const onClick = () => setShowing((prev) => !prev);
   return (
     <div>
-      <input
-        value={keyword}
-        onChange={onChange}
-        type="text"
-        placeholder="Search"
-      ></input>
-      <h1>{counter}</h1>
-      <button onClick={onClick}>click me</button>
+      {showing ? <Hello /> : null}
+      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
     </div>
   );
 }
