@@ -28,6 +28,13 @@ function App() {
         <button>Add To Do</button>
       </form>
       {/* form은 submit 이벤트가 있음 */}
+      <hr />
+      <ul>
+        {toDos.map((item, index) => (
+          <li key={index}> {item} </li>
+        ))}
+        {/* <li key={0}>{item}</li> <li key={1}>{item}</li> <li key={2}>{item}</li> */}
+      </ul>
     </div>
   );
 }
