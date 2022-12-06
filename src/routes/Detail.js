@@ -1,16 +1,43 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-const Detail = () => {
+
+function Detail() {
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const [movie, setMovie] = useState([]);
+
   const getMovie = async () => {
     const json = await (
       await fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${id}`)
     ).json();
+
+    console.log(json);
+
+    setMovie(json.data.movie);
+    setLoading(false);
   };
   useEffect(() => {
     getMovie();
   }, []);
-  return <h1>Detail</h1>;
-};
-// useParams = url에 있는 값을 변환해주는 함수 (특히 변경되는 값)
+
+  return (
+    <div>
+      {loading ? (
+        <h1>Loading Details...</h1>
+      ) : (
+        <div>
+          <h1>Title : {movie.title} </h1>
+          <img src={movie.medium_cover_image} alt={movie.title} />
+          <h4>
+            {movie.genres
+              ? movie.genres.map((g) => <li key={g}>{g}</li>)
+              : null}
+          </h4>
+          <a href={movie.url}>URL : {movie.url}</a>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default Detail;
